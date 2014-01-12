@@ -1,0 +1,3 @@
+apt-add-repository -y ppa:mag-magwas/zorp-ci-nonmaster
+apt-get update -qq
+apt-get -y install zorp kzorp-dkms

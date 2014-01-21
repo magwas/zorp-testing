@@ -1,0 +1,4 @@
+script:
+- chmod a+x ./initscript
+- sudo ./initscript
+

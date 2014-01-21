@@ -1,0 +1,26 @@
+#!/bin/bash
+set -xe
+ip netns add left
+ip netns add right
+brctl addbr right
+brctl addbr left
+ip link add lefthost type veth peer name leftremote
+ip link add righthost type veth peer name rightremote
+brctl addif left lefthost
+brctl addif right righthost
+ip link set leftremote netns left
+ip link set rightremote netns right
+
+ifconfig left 192.168.1.1
+ifconfig lefthost 192.168.1.2
+ip netns exec left ifconfig leftremote 192.168.1.10
+ip netns exec left route add default gw 192.168.1.1
+
+ifconfig right 192.168.2.1
+ifconfig righthost 192.168.2.2
+ip netns exec right ifconfig rightremote 192.168.2.10
+ip netns exec right route add default gw 192.168.2.1
+
+ping -c 1 192.168.1.10
+ping -c 1 192.168.1.20
+
